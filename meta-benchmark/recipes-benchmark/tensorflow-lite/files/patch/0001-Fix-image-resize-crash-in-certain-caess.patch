@@ -1,0 +1,36 @@
+From 31d8801af5742824a493ffe69deccdf9cba16b35 Mon Sep 17 00:00:00 2001
+From: Jianming Qiao <jianming.qiao@bp.renesas.com>
+Date: Sun, 8 Dec 2019 18:14:50 +0000
+Subject: [PATCH] Fix image resize crash in certain caess
+
+The reason it crashes is because of the following callstack:
+    event_type=tflite::profiling::ProfileEvent::EventType::OPERATOR_INVOKE_EVENT, tag=0x131f94 "OpInvoke", this=0xffffffff)
+    at /usr/src/debug/tensorflow-lite/1.10.0-r1/git/tensorflow/contrib/lite/profiling/profile_buffer.h:76
+    node_index=0, tag=0x131f94 "OpInvoke", profiler=0xffffffff,
+    this=<synthetic pointer>)
+    at /usr/src/debug/tensorflow-lite/1.10.0-r1/git/tensorflow/contrib/lite/profiling/profiler.h:135
+    at /usr/src/debug/tensorflow-lite/1.10.0-r1/git/tensorflow/contrib/lite/interpreter.cc:656
+
+The profiling data structure memory is not appropriately initialized
+
+Signed-off-by: Jianming Qiao <jianming.qiao@bp.renesas.com>
+---
+ tensorflow/lite/examples/label_image/bitmap_helpers_impl.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tensorflow/lite/examples/label_image/bitmap_helpers_impl.h b/tensorflow/lite/examples/label_image/bitmap_helpers_impl.h
+index 9015b93..a6d44c3 100644
+--- a/tensorflow/lite/examples/label_image/bitmap_helpers_impl.h
++++ b/tensorflow/lite/examples/label_image/bitmap_helpers_impl.h
+@@ -35,6 +35,8 @@ void resize(T* out, uint8_t* in, int image_height, int image_width,
+ 
+   int base_index = 0;
+ 
++  interpreter->SetProfiler(NULL);
++
+   // two inputs: input and new_sizes
+   interpreter->AddTensors(2, &base_index);
+   // one output
+-- 
+2.7.4
+

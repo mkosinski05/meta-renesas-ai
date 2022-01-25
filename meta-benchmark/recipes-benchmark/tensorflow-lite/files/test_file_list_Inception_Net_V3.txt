@@ -1,0 +1,2 @@
+inceptionv3_slim.tflite float32
+inception_v3_quant.tflite uint8

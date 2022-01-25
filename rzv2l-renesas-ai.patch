@@ -1,0 +1,21 @@
+diff --git a/meta-tensorflow-lite/recipes-mathematics/tensorflow-lite/tensorflow-lite_2.3.1.bb b/meta-tensorflow-lite/recipes-mathematics/tensorflow-lite/tensorflow-lite_2.3.1.bb
+index 4eac550..69d34fa 100644
+--- a/meta-tensorflow-lite/recipes-mathematics/tensorflow-lite/tensorflow-lite_2.3.1.bb
++++ b/meta-tensorflow-lite/recipes-mathematics/tensorflow-lite/tensorflow-lite_2.3.1.bb
+@@ -14,7 +14,7 @@ SRC_URI = " \
+ "
+ PR = "r0"
+ 
+-COMPATIBLE_MACHINE = "(iwg20m-g1m|iwg21m|iwg22m|hihope-rzg2h|hihope-rzg2m|hihope-rzg2n|ek874|smarc-rzg2l|smarc-rzg2lc)"
++COMPATIBLE_MACHINE = "(iwg20m-g1m|iwg21m|iwg22m|hihope-rzg2h|hihope-rzg2m|hihope-rzg2n|ek874|smarc-rzg2l|smarc-rzg2lc|smarc-rzv2l)"
+ 
+ S = "${WORKDIR}/git"
+ 
+@@ -40,6 +40,7 @@ do_configure(){
+ 
+ CXX_append_smarc-rzg2l += "-flax-vector-conversions"
+ CXX_append_smarc-rzg2lc += "-flax-vector-conversions"
++CXX_append_smarc-rzv2l += "-flax-vector-conversions"
+ 
+ FULL_OPTIMIZATION += "-O3 -DNDEBUG"
+ 
