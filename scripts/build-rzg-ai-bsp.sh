@@ -328,7 +328,7 @@ download_source () {
 
 		update_git_repo \
 			meta-renesas-ai \
-			https://github.com/renesas-rz/meta-renesas-ai.git \
+			https://github.com/mkosinski05/meta-renesas-ai.git \
 			${RZG_AI_BSP_VER}
 
 		cd meta-rzv; git am ../meta-renesas-ai/patches/meta-rzg2/dunfell-rzg2l/0001-Enable-RZ-G2L-Qt-SDK-builds.patch; cd -
