@@ -32,14 +32,11 @@ FAMILY=""
 
 print_help () {
         cat<<-EOF
-
 	 This script will build the RZ/G AI BSP for the specified platform.
 	 It will install all dependencies and download all source code,
 	 apart from the proprietary libraries.
-
 	 USAGE: ${COMMAND_NAME} -p <platform> -l <prop lib dir> \\
 	                    [-c] [-d] [-f <framework>] [-o <output dir>] [-h]
-
 	 OPTIONS:
 	 -h                 Print this help and exit.
 	 -c                 Only perform checkout, proprietary library
@@ -60,7 +57,6 @@ print_help () {
 	                    iwg21m, iwg20m-g1m, iwg22m, hihope-rzg2h,
 	                    hihope-rzg2m, hihope-rzg2n, ek874, smarc-rzg2l,
 	                    smarc-rzg2lc,smarc-rzv2l.
-
 	EOF
 }
 
@@ -335,7 +331,7 @@ download_source () {
 			https://github.com/renesas-rz/meta-renesas-ai.git \
 			${RZG_AI_BSP_VER}
 
-		cd meta-rzg2; git am ../meta-renesas-ai/patches/meta-rzg2/dunfell-rzg2l/0001-Enable-RZ-G2L-Qt-SDK-builds.patch; cd -
+		cd meta-rzv; git am ../meta-renesas-ai/patches/meta-rzg2/dunfell-rzg2l/0001-Enable-RZ-G2L-Qt-SDK-builds.patch; cd -
 	fi
 }
 
@@ -370,7 +366,7 @@ install_prop_libs () {
 		sh docs/sample/copyscript/copy_proprietary_softwares.sh \
 			-f ${PROP_DIR}
 		popd
-	elif [ ${FAMILY} == "rzg2l" | ${FAMILY} == "rzv2l" ]; then
+	elif [ ${FAMILY} == "rzg2l" ] || [ ${FAMILY} == "rzv2l" ]; then
 		pushd ${PROP_DIR}
 		unzip RTK0EF0045Z13001ZJ-v0.8_EN.zip
 		tar -xf RTK0EF0045Z13001ZJ-v0.8_EN/meta-rz-features.tar.gz -C ${WORK_DIR}
@@ -424,7 +420,7 @@ do_build () {
 		bitbake core-image-weston
 	elif [ ${FAMILY} == "rzg2" ]; then
 		bitbake core-image-qt
-	elif [ ${FAMILY} == "rzg2l" | ${FAMILY} == "rzv2l" ]; then
+	elif [ ${FAMILY} == "rzg2l" ] || [ ${FAMILY} == "rzv2l" ]; then
 		bitbake core-image-qt
 	fi
 }
@@ -463,7 +459,7 @@ case ${RZG_AI_BSP_VER} in
 		RZG_BSP_VER="BSP-1.0.8"
 	elif [ ${FAMILY} == "rzg2l" ]; then
 		RZG_BSP_VER="rzg2l_bsp_v1.3-update1"
-	elif [ ${FAMILY} == "rzg2l" ]; then
+	elif [ ${FAMILY} == "rzv2l" ]; then
 		RZG_BSP_VER="rzv2l_bsp_v1.0"
 	fi
 	;;
@@ -475,6 +471,7 @@ echo "RZ/G AI BSP version: ${RZG_AI_BSP_VER}"
 echo "RZ/G BSP version: ${RZG_BSP_VER}"
 echo "Working Directory: ${WORK_DIR}"
 echo "Platform: ${PLATFORM}"
+echo "Family: ${FAMILY}"
 echo "AI Framework: ${FRAMEWORK}"
 echo "Proprietary Library Directory: ${PROP_DIR}"
 echo "Output Directory: ${OUTPUT_DIR}"
