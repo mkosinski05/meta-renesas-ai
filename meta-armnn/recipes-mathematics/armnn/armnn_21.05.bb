@@ -19,7 +19,7 @@ PACKAGES += "${PN}-tensorflow-lite-examples \
              ${PN}-examples ${PN}-examples-dbg \
 "
 
-COMPATIBLE_MACHINE = "(iwg20m-g1m|iwg21m|iwg22m|hihope-rzg2h|hihope-rzg2m|hihope-rzg2n|ek874|smarc-rzg2l|smarc-rzg2lc)"
+COMPATIBLE_MACHINE = "(iwg20m-g1m|iwg21m|iwg22m|hihope-rzg2h|hihope-rzg2m|hihope-rzg2n|ek874|smarc-rzg2l|smarc-rzg2lc|smarc-rzv2l)"
 
 inherit PyHelper
 
@@ -142,6 +142,7 @@ EXTRA_OECMAKE_append_aarch64=" \
 
 EXTRA_OECMAKE_append_smarc-rzg2l  = "-DARMCOMPUTECL=1"
 EXTRA_OECMAKE_append_smarc-rzg2lc = "-DARMCOMPUTECL=1"
+EXTRA_OECMAKE_append_smarc-rzv2l  = "-DARMCOMPUTECL=1"
 
 do_configure_prepend() {
 	cd ${WORKDIR}/tensorflow/

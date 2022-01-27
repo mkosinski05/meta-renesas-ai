@@ -5,6 +5,7 @@
 #   RZ/G1: iwg21m, iwg20m-g1m, iwg22m
 #   RZ/G2: hihope-rzg2h, hihope-rzg2m, hihope-rzg2n, ek874
 #   RZ/G2L: smarc-rzg2l, smarc-rzg2lc
+#   RZ/V2L: smarc-rzv2l
 #
 # This script has been tested on Ubuntu 18.04.
 #
@@ -32,11 +33,14 @@ FAMILY=""
 
 print_help () {
         cat<<-EOF
+
 	 This script will build the RZ/G AI BSP for the specified platform.
 	 It will install all dependencies and download all source code,
 	 apart from the proprietary libraries.
+
 	 USAGE: ${COMMAND_NAME} -p <platform> -l <prop lib dir> \\
 	                    [-c] [-d] [-f <framework>] [-o <output dir>] [-h]
+
 	 OPTIONS:
 	 -h                 Print this help and exit.
 	 -c                 Only perform checkout, proprietary library
@@ -56,7 +60,8 @@ print_help () {
 	 -p <platform>      Platform to build for. Choose from:
 	                    iwg21m, iwg20m-g1m, iwg22m, hihope-rzg2h,
 	                    hihope-rzg2m, hihope-rzg2n, ek874, smarc-rzg2l,
-	                    smarc-rzg2lc,smarc-rzv2l.
+	                    smarc-rzg2lc, smarc-rzv2l.
+
 	EOF
 }
 
@@ -116,7 +121,8 @@ while getopts ":cdf:l:o:p:h" opt; do
 			PLATFORM="${OPTARG}"
 			FAMILY="rzg2l"
 			;;
-		"smarc-rzv2l" )
+
+		"smarc-rzv2l")
 			PLATFORM="${OPTARG}"
 			FAMILY="rzv2l"
 			;;
@@ -294,7 +300,7 @@ download_source () {
 
 		update_git_repo \
 			meta-renesas-ai \
-			https://github.com/mkosinski05/meta-renesas-ai.git \
+			https://github.com/renesas-rz/meta-renesas-ai.git \
 			${RZG_AI_BSP_VER}
 
 		cd meta-rzg2; git am ../meta-renesas-ai/patches/meta-rzg2/dunfell-rzg2l/0001-Enable-RZ-G2L-Qt-SDK-builds.patch; cd -
@@ -315,7 +321,7 @@ download_source () {
 			meta-gplv2 \
 			http://git.yoctoproject.org/cgit.cgi/meta-gplv2 \
 			60b251c25ba87e946a0ca4cdc8d17b1cb09292ac
-			
+
 		update_git_repo \
 			meta-qt5 \
 			https://github.com/meta-qt5/meta-qt5.git \
@@ -325,6 +331,8 @@ download_source () {
 			meta-rzv \
 			https://github.com/renesas-rz/meta-rzv.git \
 			${RZG_BSP_VER}
+
+		RZG_AI_BSP_VER="rzv2l-support"
 
 		update_git_repo \
 			meta-renesas-ai \
@@ -443,6 +451,10 @@ copy_output () {
 		cp ${bin_dir}/core-image-*-${PLATFORM}.tar.gz ${OUTPUT_DIR}/${PLATFORM}
 		cp ${bin_dir}/Image-${PLATFORM}.bin ${OUTPUT_DIR}/${PLATFORM}
 		cp ${bin_dir}/*smarc*.dtb ${OUTPUT_DIR}/${PLATFORM}
+	elif [ ${FAMILY} == "rzv2l" ]; then
+		cp ${bin_dir}/core-image-*-${PLATFORM}.tar.gz ${OUTPUT_DIR}/${PLATFORM}
+		cp ${bin_dir}/Image-${PLATFORM}.bin ${OUTPUT_DIR}/${PLATFORM}
+		cp ${bin_dir}/*smarc*.dtb ${OUTPUT_DIR}/${PLATFORM}
 	fi
 }
 
@@ -484,7 +496,7 @@ install_prop_libs
 configure_build
 
 if $BUILD; then
-	echo -ne "\nHave licensing options been updated in the local.conf file? "; read
+	echo -ne "\nHave licensing options been updated in the local.conf file? [Y/N]"; read
 	if [[ $REPLY =~ ^[Yy]$ ]]
 	then
 		do_build

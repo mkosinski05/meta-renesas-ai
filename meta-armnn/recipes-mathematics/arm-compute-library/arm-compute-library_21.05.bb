@@ -20,7 +20,7 @@ SRC_URI = " \
 	file://0001-Add-code-to-detect-Mali-TM-G31.patch \
 "
 
-COMPATIBLE_MACHINE = "(iwg20m-g1m|iwg21m|iwg22m|hihope-rzg2h|hihope-rzg2m|hihope-rzg2n|ek874|smarc-rzg2l|smarc-rzg2lc)"
+COMPATIBLE_MACHINE = "(iwg20m-g1m|iwg21m|iwg22m|hihope-rzg2h|hihope-rzg2m|hihope-rzg2n|ek874|smarc-rzg2l|smarc-rzg2lc|smarc-rzv2l)"
 
 S = "${WORKDIR}/git"
 
@@ -37,6 +37,7 @@ EXTRA_OESCONS_aarch64 = "arch=arm64-v8a${OESCONS_COMMON_FLAG}"
 # Override the platform generic opencl flag for the RZ/G2L
 OESCONS_COMMON_FLAG_append_smarc-rzg2l  = " opencl=1 embed_kernels=1"
 OESCONS_COMMON_FLAG_append_smarc-rzg2lc = " opencl=1 embed_kernels=1"
+OESCONS_COMMON_FLAG_append_smarc-rzv2l  = " opencl=1 embed_kernels=1"
 
 do_install() {
 	CP_ARGS="-Prf --preserve=mode,timestamps --no-preserve=ownership"
