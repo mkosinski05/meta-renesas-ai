@@ -319,7 +319,7 @@ download_source () {
 
 		update_git_repo \
 			meta-gplv2 \
-			http://git.yoctoproject.org/cgit.cgi/meta-gplv2 \
+			http://git.yoctoproject.org/meta-gplv2 \
 			60b251c25ba87e946a0ca4cdc8d17b1cb09292ac
 
 		update_git_repo \
