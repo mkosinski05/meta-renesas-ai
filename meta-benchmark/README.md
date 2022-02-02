@@ -33,14 +33,10 @@ cd /usr/bin/armnnDelegateBenchmark
 ```bash
 cd /usr/bin/tensorflow-lite-benchmark
 
-# Test on iwg20m, iwg22m, hihope-rzg2n or ek874 with 2 cores
+# Test on hihope-rzg2n or ek874 with 2 cores
 (inference run 30 times)
 ./run_TF_measurement.py test_file_list_Inception_Net_V3.txt \
 /home/root/models/tensorflowlite/Mobile_InceptionV3/ 30 2
-
-# Test on iwg21m with 4 cores (inference run 30 times)
-./run_TF_measurement.py test_file_list_Inception_Net_V3.txt \
-/home/root/models/tensorflowlite/Mobile_InceptionV3/ 30 4
 
 # Test on hihope-rzg2m with 6 cores (inference run 30 times)
 ./run_TF_measurement.py test_file_list_Inception_Net_V3.txt \
@@ -140,7 +136,7 @@ python3 inception_v3.py inception_v3_google-1a9a5a14.pth float32 imagenet_classe
 ```
 
 ## Sample Build Configurations
-Two sets of configuration templates are included in the *templates* directory.
+Three sets of configuration templates are included in the *templates* directory.
 These allow different frameworks that use compatible dependencies to be easily
 built together.
 

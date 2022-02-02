@@ -1,23 +1,22 @@
 # meta-renesas-ai #
-This OpenEmbedded/Yocto layer collector adds AI tools support to Renesas RZ/G1
-and RZ/G2 platforms.
-
-#### For RZ/G1 family ####
-The layers should be used with the official Renesas RZ/G1 Yocto Poky BSP based
-on the CIP Kernel:  
-URI: **https://github.com/renesas-rz/meta-renesas.git**  
-tag: certified-linux-v2.1.9 (79bd2782cfb9ddc1760f3fea3d4fc258c20dc552)
+This OpenEmbedded/Yocto layer collector adds AI tools support to Renesas RZ/G2
+platforms.
 
 #### For RZ/G2 family ####
 The layers should be used with the official Renesas RZ/G2 Yocto Poky BSP based
 on the CIP Kernel:  
 URI: **https://github.com/renesas-rz/meta-rzg2.git**  
-tag: BSP-1.0.8 (b11b9471c31d8231a43c7eeeed8702e9873841ae)
+tag: BSP-1.0.10-update1 (85d5f8cc554413fc19e4fff43cb0c027f55d0778)
 
 #### For RZ/G2L family ####
 The layers should be used with the official Renesas RZ/G2L Yocto Poky BSP:  
 URI: **https://github.com/renesas-rz/meta-rzg2/tree/dunfell/rzg2l**  
 tag: rzg2l_bsp_v1.3-update1 (de2774adf5a0852b03e8842aec794f2825ffc11b)
+
+#### For RZ/V2 ####
+The layers should be used with the official Renesas RZ/V2L Yocto Poky BSP:  
+URI: **https://github.com/renesas-rz/meta-rzv/tree/dunfell/rzv2l**  
+commit: c9a0f1c4f8ac6a58958e57630ac92c23a037d1ef
 
 For each AI tool, please refer to **meta-${AI\_TOOL\_NAME}/README.md**. For
 example:  
@@ -42,11 +41,11 @@ in the [Licensing](#licensing) section.
 
 ### Supported Frameworks/Versions ###
 
-| Framework       | Version   | Parser(s)                              | Inference Hardware               |
-| :-------------- | :-------- | :------------------------------------- | :------------------------------- |
-| ArmNN           | v21.05    | ONNX<br>TensorFlow Lite                | CPU                              |
-| ONNX Runtime    | v1.8.0    | ONNX                                   | CPU                              |
-| TensorFlow Lite | v2.3.1    | TensorFlow Lite                        | CPU                              |
+| Framework       | Version   | Parser(s)                                 | Inference Hardware                     |
+| :-------------- | :-------- | :---------------------------------------- | :------------------------------------- |
+| ArmNN           | v21.05    | ONNX (v1.6.0)<br>TensorFlow Lite (v2.3.1) | CPU<br>GPU (smarc-rzg2l, smarc-rzg2lc) |
+| ONNX Runtime    | v1.8.0    | ONNX                                      | CPU                                    |
+| TensorFlow Lite | v2.5.0    | TensorFlow Lite                           | CPU                                    |
 
 ### Supported Embedded Platforms ###
 
@@ -58,14 +57,12 @@ in the [Licensing](#licensing) section.
 | Renesas RZ/G2E  | Silicon Linux ek874      |
 | Renesas RZ/G2L  | Renesas smarc-rzg2l evk  |
 | Renesas RZ/G2LC | Renesas smarc-rzg2lc evk |
-| Renesas RZ/G1H  | iWave Systems iwg21m     |
-| Renesas RZ/G1M  | iWave Systems iwg20m-g1m |
-| Renesas RZ/G1E  | iWave Systems iwg22m     |
+| Renesas RZ/V2L  | Renesas smarc-rzv2l evk  |
 
 ### Build Script ###
 A simple build script has been created to manage the build process.  
 Before running the script you will need to download the relevant proprietary
-libraries from the Renesas website. See the Renesas RZ/G[12] BSP readme file for
+libraries from the Renesas website. See the Renesas RZ/G2 BSP readme file for
 details on how to do this.
 
 Run `./scripts/build-rzg-ai-bsp.sh -h` to get an overview on how to use the
@@ -98,6 +95,17 @@ If needed, the size of the swap file can be set (in MB) in local.conf:
 SWAP_SIZE = "512"
 ```
 
+**meta-rzg2 patches for RZ/G2 BSP**  
+The unauthenticated git protocol is no longer supported by Github.  
+Applying *patches/meta-rzg2/rocko-rzg2/0001-multimedia-gstreamer-Use-https.patch*
+will change the protocol used during cloning to https, allowing compilation.
+
+```
+cd meta-rzg2
+git am ../meta-renesas-ai/patches/meta-rzg2/rocko-rzg2/0001-multimedia-gstreamer-Use-https.patch
+```
+
+
 **meta-rzg2 patches for RZ/G2L BSP**  
 There is a bug when trying to build the SDK for core-image-qt images.
 
@@ -109,8 +117,18 @@ cd meta-rzg2
 git am ../meta-renesas-ai/patches/meta-rzg2/dunfell-rzg2l/0001-Enable-RZ-G2L-Qt-SDK-builds.patch
 ```
 
-This only needs to be done when building for the *smarc-rzg2l* and
-*smarc-rzg2lc* platforms.
+This only needs to be done when building for the *smarc-rzg2l*, *smarc-rzg2lc*
+and *smarc-rzv2l* platforms.
+
+The unauthenticated git protocol is no longer supported by Github.  
+Applying *patches/meta-rzg2/rocko-rzg2/0001-multimedia-gstreamer-Use-https.patch*
+will change the protocol used during cloning to https, allowing compilation.
+
+```
+cd meta-rzg2
+git am ../meta-renesas-ai/patches/meta-rzg2/dunfell-rzg2l/0001-multimedia-gstreamer-Use-https.patch
+```
+
 
 ## LICENSING ##
 
@@ -121,16 +139,16 @@ The configuration files found under:
 ```
 meta-*/templates/*/local.conf
 ```
-show how to whitelist the commercial license flag for graphics packages.
 This is needed to add full video encoding/decoding support to the BSP.  
-For example for the RZ/G1H:
+For example for the RZ/G2L:
 ```
-LICENSE_FLAGS_WHITELIST = "commercial_gstreamer1.0-libav commercial_gstreamer1.0-omx"
+LICENSE_FLAGS_WHITELIST = "commercial_gstreamer1.0-libav commercial_gstreamer1.0-plugins-ugly commercial_ffmpeg commercial_mpeg2dec commercial_faac commercial_faad2 commercial_x264"
 ```
 
-By editing these commented lines in the template files coming from this repository,
-the user agrees to the terms and conditions from the licenses of the packages
-that are installed into the final image and that are covered by a commercial license.
+By editing these commented lines in the template files coming from this
+repository, the user agrees to the terms and conditions from the licenses of the
+packages that are installed into the final image and that are covered by a
+commercial license.
 
 The user also acknowledges that it's their responsibility to make sure
 they hold the right to use code protected by commercial agreements, whether
@@ -140,8 +158,8 @@ Finally, the user acknowledges that it's their responsibility to make sure
 they hold the right to copy, use, modify, and re-distribute the intellectual
 property offered by this collection of meta-layers.
 
-**Note:** Without uncommenting the `LICENSE_FLAGS_WHITELIST` lines the BSP build will fail.  
-
+**Note:** Without uncommenting the `LICENSE_FLAGS_WHITELIST` lines the BSP build
+will fail.
 
 ---
 
