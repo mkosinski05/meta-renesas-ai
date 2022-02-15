@@ -28,7 +28,9 @@ PR = "r0"
 
 inherit scons
 
-OESCONS_COMMON_FLAG = " extra_cxx_flags="${TOOLCHAIN_OPTIONS}" benchmark_tests=1 \
+FEATURES = "libgomp libgomp-dev libgomp-staticdev"
+
+OESCONS_COMMON_FLAG = " extra_cxx_flags="${TOOLCHAIN_OPTIONS} -I${WORKDIR}/recipe-sysroot${libdir}/${TARGET_SYS}/8.3.0/include/" benchmark_tests=1 \
 			validation_tests=0 neon=1 openmp=1 opencl=0 set_soname=1"
 
 EXTRA_OESCONS_aarch64 = "arch=arm64-v8a${OESCONS_COMMON_FLAG}"
