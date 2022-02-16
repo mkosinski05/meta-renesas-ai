@@ -42,6 +42,8 @@ CXX_append_smarc-rzg2l    += "-flax-vector-conversions"
 CFLAGS_append_smarc-rzg2l += "-flax-vector-conversions"
 CXX_append_smarc-rzg2lc    += "-flax-vector-conversions"
 CFLAGS_append_smarc-rzg2lc += "-flax-vector-conversions"
+CXX_append_smarc-rzv2l    += "-flax-vector-conversions"
+CFLAGS_append_smarc-rzv2l += "-flax-vector-conversions"
 
 do_compile_prepend() {
 	${S}/tensorflow/lite/tools/make/build_${TARGET_ARCH}_lib.sh

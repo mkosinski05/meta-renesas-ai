@@ -4,6 +4,10 @@
 # The script supports building for the following devices:
 #   RZ/G2: hihope-rzg2h, hihope-rzg2m, hihope-rzg2n, ek874
 #   RZ/G2L: smarc-rzg2l, smarc-rzg2lc
+<<<<<<< HEAD
+=======
+#   RZ/V2L: smarc-rzv2l
+>>>>>>> ae39207c79393129b12cce22042aec893c5dacfe
 #
 # This script has been tested on Ubuntu 18.04.
 #
@@ -57,7 +61,11 @@ print_help () {
 	                    By default ${OUTPUT_DIR} will be used.
 	 -p <platform>      Platform to build for. Choose from:
 	                    hihope-rzg2h, hihope-rzg2m, hihope-rzg2n, ek874,
+<<<<<<< HEAD
 	                    smarc-rzg2l, smarc-rzg2lc.
+=======
+	                    smarc-rzg2l, smarc-rzg2lc, smarc-rzv2l.
+>>>>>>> ae39207c79393129b12cce22042aec893c5dacfe
 
 	EOF
 }
@@ -113,6 +121,14 @@ while getopts ":cdf:l:o:p:h" opt; do
 			PLATFORM="${OPTARG}"
 			FAMILY="rzg2l"
 			;;
+<<<<<<< HEAD
+=======
+
+		"smarc-rzv2l")
+			PLATFORM="${OPTARG}"
+			FAMILY="rzv2l"
+			;;
+>>>>>>> ae39207c79393129b12cce22042aec893c5dacfe
 		*)
 			echo " ERROR: -p \"${OPTARG}\" Not supported"
 			print_help
@@ -182,7 +198,11 @@ update_git_repo () {
 
 	# Switch to a local branch
 	git checkout HEAD^
+<<<<<<< HEAD
 	git branch -f tmp $3
+=======
+	git branch -f tmp $3 || git branch -f tmp origin/$3
+>>>>>>> ae39207c79393129b12cce22042aec893c5dacfe
 	git checkout tmp
 
 	popd
@@ -261,6 +281,45 @@ download_source () {
 			${RZG_AI_BSP_VER}
 
 		cd meta-rzg2; git am ../meta-renesas-ai/patches/meta-rzg2/dunfell-rzg2l/0001-Enable-RZ-G2L-Qt-SDK-builds.patch; cd -
+<<<<<<< HEAD
+=======
+	elif [ ${FAMILY} == "rzv2l" ]; then
+		update_git_repo \
+			poky \
+			git://git.yoctoproject.org/poky \
+			e32d854e33bc86c2a616df8708e021a098afcf73
+
+		cd poky; git cherry-pick 9e444; cd -
+
+		update_git_repo \
+			meta-openembedded \
+			git://git.openembedded.org/meta-openembedded \
+			cc6fc6b1641ab23089c1e3bba11e0c6394f0867c
+
+		update_git_repo \
+			meta-gplv2 \
+			https://git.yoctoproject.org/meta-gplv2 \
+			60b251c25ba87e946a0ca4cdc8d17b1cb09292ac
+
+		update_git_repo \
+			meta-qt5 \
+			https://github.com/meta-qt5/meta-qt5.git \
+			c1b0c9f546289b1592d7a895640de103723a0305
+
+		update_git_repo \
+			meta-rzv \
+			https://github.com/renesas-rz/meta-rzv.git \
+			${RZG_BSP_VER}
+
+		RZG_AI_BSP_VER="rzv2l-support"
+
+		update_git_repo \
+			meta-renesas-ai \
+			https://github.com/mkosinski05/meta-renesas-ai.git \
+			${RZG_AI_BSP_VER}
+
+		cd meta-rzv; git am ../meta-renesas-ai/patches/meta-rzg2/dunfell-rzg2l/0001-Enable-RZ-G2L-Qt-SDK-builds.patch; cd -
+>>>>>>> ae39207c79393129b12cce22042aec893c5dacfe
 	fi
 }
 
@@ -286,6 +345,16 @@ install_prop_libs () {
 		unzip RTK0EF0045Z15001ZJ-v0.51_EN.zip
 		tar -xf RTK0EF0045Z15001ZJ-v0.51_EN/meta-rz-features.tar.gz -C ${WORK_DIR}
 		popd
+<<<<<<< HEAD
+=======
+	elif [ ${FAMILY} == "rzv2l" ]; then
+		pushd ${PROP_DIR}
+		unzip RTK0EF0045Z13001ZJ-v0.8_EN.zip
+		tar -xf RTK0EF0045Z13001ZJ-v0.8_EN/meta-rz-features.tar.gz -C ${WORK_DIR}
+		unzip RTK0EF0045Z15001ZJ-v0.51_EN.zip
+		tar -xf RTK0EF0045Z15001ZJ-v0.51_EN/meta-rz-features.tar.gz -C ${WORK_DIR}
+		popd
+>>>>>>> ae39207c79393129b12cce22042aec893c5dacfe
 	fi
 }
 
@@ -333,6 +402,11 @@ do_build () {
 		bitbake core-image-qt
 	elif [ ${FAMILY} == "rzg2l" ]; then
 		bitbake core-image-qt
+<<<<<<< HEAD
+=======
+	elif [ ${FAMILY} == "rzv2l" ]; then
+		bitbake core-image-qt
+>>>>>>> ae39207c79393129b12cce22042aec893c5dacfe
 	fi
 }
 
@@ -351,6 +425,13 @@ copy_output () {
 		cp ${bin_dir}/core-image-*-${PLATFORM}.tar.gz ${OUTPUT_DIR}/${PLATFORM}
 		cp ${bin_dir}/Image-${PLATFORM}.bin ${OUTPUT_DIR}/${PLATFORM}
 		cp ${bin_dir}/*smarc*.dtb ${OUTPUT_DIR}/${PLATFORM}
+<<<<<<< HEAD
+=======
+	elif [ ${FAMILY} == "rzv2l" ]; then
+		cp ${bin_dir}/core-image-*-${PLATFORM}.tar.gz ${OUTPUT_DIR}/${PLATFORM}
+		cp ${bin_dir}/Image-${PLATFORM}.bin ${OUTPUT_DIR}/${PLATFORM}
+		cp ${bin_dir}/*smarc*.dtb ${OUTPUT_DIR}/${PLATFORM}
+>>>>>>> ae39207c79393129b12cce22042aec893c5dacfe
 	fi
 }
 
@@ -365,6 +446,11 @@ case ${RZG_AI_BSP_VER} in
 		RZG_BSP_VER="BSP-1.0.10-update1"
 	elif [ ${FAMILY} == "rzg2l" ]; then
 		RZG_BSP_VER="rzg2l_bsp_v1.3-update1"
+<<<<<<< HEAD
+=======
+	elif [ ${FAMILY} == "rzv2l" ]; then
+		RZG_BSP_VER="rzv2l_bsp_v1.0"
+>>>>>>> ae39207c79393129b12cce22042aec893c5dacfe
 	fi
 	;;
 esac
@@ -387,7 +473,11 @@ install_prop_libs
 configure_build
 
 if $BUILD; then
+<<<<<<< HEAD
 	echo -ne "\nHave licensing options been updated in the local.conf file? "; read
+=======
+	echo -ne "\nHave licensing options been updated in the local.conf file? [Y/N]"; read
+>>>>>>> ae39207c79393129b12cce22042aec893c5dacfe
 	if [[ $REPLY =~ ^[Yy]$ ]]
 	then
 		do_build

@@ -28,6 +28,8 @@ PR = "r0"
 
 inherit scons
 
+FEATURES = "libgomp libgomp-dev libgomp-staticdev"
+
 OESCONS_COMMON_FLAG = " extra_cxx_flags="${TOOLCHAIN_OPTIONS}" benchmark_tests=1 \
 			validation_tests=0 neon=1 openmp=1 opencl=0 set_soname=1"
 
@@ -36,6 +38,7 @@ EXTRA_OESCONS_aarch64 = "arch=arm64-v8a${OESCONS_COMMON_FLAG}"
 # Override the platform generic opencl flag for the RZ/G2L
 OESCONS_COMMON_FLAG_append_smarc-rzg2l  = " opencl=1 embed_kernels=1"
 OESCONS_COMMON_FLAG_append_smarc-rzg2lc = " opencl=1 embed_kernels=1"
+OESCONS_COMMON_FLAG_append_smarc-rzv2l  = " opencl=1 embed_kernels=1"
 
 do_install() {
 	CP_ARGS="-Prf --preserve=mode,timestamps --no-preserve=ownership"

@@ -40,6 +40,7 @@ do_configure(){
 
 CXX_append_smarc-rzg2l += "-flax-vector-conversions"
 CXX_append_smarc-rzg2lc += "-flax-vector-conversions"
+CXX_append_smarc-rzv2l += "-flax-vector-conversions"
 
 FULL_OPTIMIZATION += "-O3 -DNDEBUG"
 

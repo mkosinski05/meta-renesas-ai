@@ -13,6 +13,11 @@ The layers should be used with the official Renesas RZ/G2L Yocto Poky BSP:
 URI: **https://github.com/renesas-rz/meta-rzg2/tree/dunfell/rzg2l**  
 tag: rzg2l_bsp_v1.3-update1 (de2774adf5a0852b03e8842aec794f2825ffc11b)
 
+#### For RZ/V2 ####
+The layers should be used with the official Renesas RZ/V2L Yocto Poky BSP:  
+URI: **https://github.com/renesas-rz/meta-rzv/tree/dunfell/rzv2l**  
+commit: c9a0f1c4f8ac6a58958e57630ac92c23a037d1ef
+
 For each AI tool, please refer to **meta-${AI\_TOOL\_NAME}/README.md**. For
 example:  
 *meta-tensorflow-lite/README.md*
@@ -52,6 +57,7 @@ in the [Licensing](#licensing) section.
 | Renesas RZ/G2E  | Silicon Linux ek874      |
 | Renesas RZ/G2L  | Renesas smarc-rzg2l evk  |
 | Renesas RZ/G2LC | Renesas smarc-rzg2lc evk |
+| Renesas RZ/V2L  | Renesas smarc-rzv2l evk  |
 
 ### Build Script ###
 A simple build script has been created to manage the build process.  

@@ -132,6 +132,7 @@ EXTRA_OECMAKE_append_aarch64=" \
 
 EXTRA_OECMAKE_append_smarc-rzg2l  = "-DARMCOMPUTECL=1"
 EXTRA_OECMAKE_append_smarc-rzg2lc = "-DARMCOMPUTECL=1"
+EXTRA_OECMAKE_append_smarc-rzv2l  = "-DARMCOMPUTECL=1"
 
 do_configure_prepend() {
 	cd ${WORKDIR}/tensorflow/
