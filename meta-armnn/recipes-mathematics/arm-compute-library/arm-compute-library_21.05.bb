@@ -20,7 +20,7 @@ SRC_URI = " \
 	file://0001-Add-code-to-detect-Mali-TM-G31.patch \
 "
 
-COMPATIBLE_MACHINE = "(hihope-rzg2h|hihope-rzg2m|hihope-rzg2n|ek874|smarc-rzg2l|smarc-rzg2lc)"
+COMPATIBLE_MACHINE = "(hihope-rzg2h|hihope-rzg2m|hihope-rzg2n|ek874|smarc-rzg2l|smarc-rzg2lc|smarc-rzv2l)"
 
 S = "${WORKDIR}/git"
 
@@ -30,7 +30,7 @@ inherit scons
 
 FEATURES = "libgomp libgomp-dev libgomp-staticdev"
 
-OESCONS_COMMON_FLAG = " extra_cxx_flags="${TOOLCHAIN_OPTIONS}" benchmark_tests=1 \
+OESCONS_COMMON_FLAG = " extra_cxx_flags="${TOOLCHAIN_OPTIONS} -I${WORKDIR}/recipe-sysroot${libdir}/${TARGET_SYS}/8.3.0/include/" benchmark_tests=1 \
 			validation_tests=0 neon=1 openmp=1 opencl=0 set_soname=1"
 
 EXTRA_OESCONS_aarch64 = "arch=arm64-v8a${OESCONS_COMMON_FLAG}"

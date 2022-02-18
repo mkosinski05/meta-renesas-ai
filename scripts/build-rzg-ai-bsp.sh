@@ -57,8 +57,7 @@ print_help () {
 	 -o <output dir>    Location to copy binaries to when build is complete.
 	                    By default ${OUTPUT_DIR} will be used.
 	 -p <platform>      Platform to build for. Choose from:
-	                    hihope-rzg2h, hihope-rzg2m, hihope-rzg2n, ek874
-	                    smarc-rzg2l, smarc-rzg2lc.
+	                    hihope-rzg2h, hihope-rzg2m, hihope-rzg2n, ek874,
 	                    smarc-rzg2l, smarc-rzg2lc, smarc-rzv2l.
 
 	EOF
@@ -109,7 +108,7 @@ while getopts ":cdf:l:o:p:h" opt; do
 		"hihope-rzg2h" | "hihope-rzg2m" | "hihope-rzg2n" | "ek874")
 			PLATFORM="${OPTARG}"
 			FAMILY="rzg2"
-        	;;
+        	        ;;
 
 		"smarc-rzg2l" | "smarc-rzg2lc")
 			PLATFORM="${OPTARG}"
@@ -189,11 +188,7 @@ update_git_repo () {
 
 	# Switch to a local branch
 	git checkout HEAD^
-
-	git branch -f tmp $3
-
 	git branch -f tmp $3 || git branch -f tmp origin/$3
-
 	git checkout tmp
 
 	popd
@@ -272,7 +267,6 @@ download_source () {
 			${RZG_AI_BSP_VER}
 
 		cd meta-rzg2; git am ../meta-renesas-ai/patches/meta-rzg2/dunfell-rzg2l/0001-Enable-RZ-G2L-Qt-SDK-builds.patch; cd -
-
 	elif [ ${FAMILY} == "rzv2l" ]; then
 		update_git_repo \
 			poky \
@@ -299,7 +293,7 @@ download_source () {
 		update_git_repo \
 			meta-rzv \
 			https://github.com/renesas-rz/meta-rzv.git \
-			${RZG_BSP_VER}
+	    	${RZG_BSP_VER}
 
 		RZG_AI_BSP_VER="rzv2l-support"
 
@@ -309,7 +303,6 @@ download_source () {
 			${RZG_AI_BSP_VER}
 
 		cd meta-rzv; git am ../meta-renesas-ai/patches/meta-rzg2/dunfell-rzg2l/0001-Enable-RZ-G2L-Qt-SDK-builds.patch; cd -
-
 	fi
 }
 
@@ -335,7 +328,6 @@ install_prop_libs () {
 		unzip RTK0EF0045Z15001ZJ-v0.51_EN.zip
 		tar -xf RTK0EF0045Z15001ZJ-v0.51_EN/meta-rz-features.tar.gz -C ${WORK_DIR}
 		popd
-
 	elif [ ${FAMILY} == "rzv2l" ]; then
 		pushd ${PROP_DIR}
 		unzip RTK0EF0045Z13001ZJ-v0.8_EN.zip
@@ -343,7 +335,6 @@ install_prop_libs () {
 		unzip RTK0EF0045Z15001ZJ-v0.51_EN.zip
 		tar -xf RTK0EF0045Z15001ZJ-v0.51_EN/meta-rz-features.tar.gz -C ${WORK_DIR}
 		popd
-
 	fi
 }
 
@@ -391,10 +382,8 @@ do_build () {
 		bitbake core-image-qt
 	elif [ ${FAMILY} == "rzg2l" ]; then
 		bitbake core-image-qt
-
 	elif [ ${FAMILY} == "rzv2l" ]; then
 		bitbake core-image-qt
-
 	fi
 }
 
@@ -413,12 +402,10 @@ copy_output () {
 		cp ${bin_dir}/core-image-*-${PLATFORM}.tar.gz ${OUTPUT_DIR}/${PLATFORM}
 		cp ${bin_dir}/Image-${PLATFORM}.bin ${OUTPUT_DIR}/${PLATFORM}
 		cp ${bin_dir}/*smarc*.dtb ${OUTPUT_DIR}/${PLATFORM}
-
 	elif [ ${FAMILY} == "rzv2l" ]; then
 		cp ${bin_dir}/core-image-*-${PLATFORM}.tar.gz ${OUTPUT_DIR}/${PLATFORM}
 		cp ${bin_dir}/Image-${PLATFORM}.bin ${OUTPUT_DIR}/${PLATFORM}
 		cp ${bin_dir}/*smarc*.dtb ${OUTPUT_DIR}/${PLATFORM}
-
 	fi
 }
 
@@ -433,10 +420,8 @@ case ${RZG_AI_BSP_VER} in
 		RZG_BSP_VER="BSP-1.0.10-update1"
 	elif [ ${FAMILY} == "rzg2l" ]; then
 		RZG_BSP_VER="rzg2l_bsp_v1.3-update1"
-
 	elif [ ${FAMILY} == "rzv2l" ]; then
 		RZG_BSP_VER="rzv2l_bsp_v1.0"
-
 	fi
 	;;
 esac
@@ -459,11 +444,7 @@ install_prop_libs
 configure_build
 
 if $BUILD; then
-
-	echo -ne "\nHave licensing options been updated in the local.conf file? "; read
-
 	echo -ne "\nHave licensing options been updated in the local.conf file? [Y/N]"; read
-
 	if [[ $REPLY =~ ^[Yy]$ ]]
 	then
 		do_build
