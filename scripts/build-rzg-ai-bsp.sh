@@ -109,12 +109,12 @@ while getopts ":cdf:l:o:p:h" opt; do
 		"hihope-rzg2h" | "hihope-rzg2m" | "hihope-rzg2n" | "ek874")
 			PLATFORM="${OPTARG}"
 			FAMILY="rzg2"
-        	        ;;
+        	;;
 
 		"smarc-rzg2l" | "smarc-rzg2lc")
 			PLATFORM="${OPTARG}"
 			FAMILY="rzg2l"
-			;
+			;;
 
 		"smarc-rzv2l")
 			PLATFORM="${OPTARG}"
